@@ -1,11 +1,11 @@
 # subreddit-pulse
-Monitor subreddit(s) for specific topics
 
 ## Overview
 
 
 This program monitors new submissions in specific subreddits for specific keywords, making it easy to parse information about topics of interest. If one of the provided keywords is encountered, information about the submission (namely, title, date, url, and id) is logged for later viewing. The program continuously monitors the subreddits until the program is terminated.
 
+As an example, consider a case in which you're interested in finding new recipes for tacos. In such a case, subreddit-pulse could monitor cooking-related subreddits for the keywords 'taco' and 'tacos', and it will log each new submission that includes these keywords. Later, a review of the generated log file will show all new submisisons that discuss tacos, ensuring that no new recipes are missed.
 
 ## Installation 
 
