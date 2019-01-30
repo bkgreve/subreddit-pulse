@@ -4,12 +4,14 @@ import click
 
 
 @click.command()
-@click.option('--subreddits',
-              default='askreddit',
-              help="Subreddits to monitor. Use '+' to join multiple.")
-@click.option('--search_terms',
-              default='keywords.dat',
-              help="File containing search terms for monitoring subreddits.")
+@click.option(
+    '--subreddits',
+    default='askreddit',
+    help="Subreddits to monitor. Use '+' to join multiple.")
+@click.option(
+    '--search_terms',
+    default='keywords.dat',
+    help="File containing search terms for monitoring subreddits.")
 def watch_subreddit(subreddits, search_terms):
     """Subreddit Pulse: Monitors Subreddits for Specific Terms
 

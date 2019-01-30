@@ -25,11 +25,13 @@ class SubredditMonitor(object):
         reddit = self._reddit_access()
         search_terms = self._get_keywords()
         for submission in reddit.subreddit(subreddits).stream.submissions():
-            if any(word in submission.title for word in search_terms):
+            if any(word in submission.title.lower() for word in search_terms):
                 print("Logging submission")
                 self._log_submissions(submission)
-            elif any(word in submission.selftext for word in search_terms):
+            elif any(word in submission.selftext.lower()
+                     for word in search_terms):
                 print("Logging submission")
+                self._log_submissions(submission)
             else:
                 print("Passing. Submission does not satisfy criteria.")
 
@@ -45,11 +47,12 @@ class SubredditMonitor(object):
         username = config['DEFAULT']['USERNAME']
         password = config['DEFAULT']['PASSWORD']
 
-        reddit = praw.Reddit(client_id=client_id,
-                             client_secret=client_secret,
-                             user_agent=user_agent,
-                             username=username,
-                             password=password)
+        reddit = praw.Reddit(
+            client_id=client_id,
+            client_secret=client_secret,
+            user_agent=user_agent,
+            username=username,
+            password=password)
 
         return reddit
 
