@@ -39,7 +39,7 @@ def watch_subreddit_keywords(subreddits, search_terms, log):
     monitor = SubredditMonitor()
     monitor.logfile = logfile
     monitor.keyword_file = search_terms
-    monitor.subreddit_monitor(subreddits)
+    monitor.subreddit_monitor_keywords(subreddits)
 
 
 @cli.command('all')
@@ -48,7 +48,7 @@ def watch_subreddit_keywords(subreddits, search_terms, log):
     prompt='Subreddits to monitor.',
     help="Subreddits to monitor. Use '+' to join multiple.")
 @click.option('--log', help="Name for log file. Default is <date>.csv")
-def watch_subreddit_all(subreddits):
+def watch_subreddit_all(subreddits, log):
     """Logs all posts from specific subreddits.
 
     For specified subreddits, logs all posts to log file for later
@@ -56,7 +56,10 @@ def watch_subreddit_all(subreddits):
     subreddit names with '+', e.g., 'askreddit+gifs+learnpython'. The
     log file is stored in logfiles/.
     """
-    pass
+    logfile = _create_logfile(log)
+    monitor = SubredditMonitor()
+    monitor.logfile = logfile
+    monitor.subreddit_monitor_all(subreddits)
 
 
 def _create_logfile(log):
@@ -71,7 +74,7 @@ def _create_logfile(log):
         time_string = time.strftime("%Y%m%d-%H%M%S")
         with open(f"logfiles/{time_string}.csv", 'w') as f:
             f.write("Title,ID,URL,Date_Created,Body\n")
-            print(f"Log file ({time_string.csv}) created")
+            print(f"Log file ({time_string}.csv) created")
         return f"logfiles/{time_string}.csv"
     elif log:
         with open(f"logfiles/{log}", 'w') as f:
