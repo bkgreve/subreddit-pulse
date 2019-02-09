@@ -10,7 +10,7 @@ class SubredditMonitor(object):
         self.logfile = "logfile.csv"
         self.keyword_file = "keywords.dat"
 
-    def subreddit_monitor(self, subreddits):
+    def subreddit_monitor_keywords(self, subreddits):
         """Monitors new submissions for keywords.
 
         This function monitors the title/body of new submissions for given
@@ -33,6 +33,19 @@ class SubredditMonitor(object):
                 self._log_submissions(submission)
             else:
                 print("Passing. Submission does not satisfy criteria.")
+
+    def subreddit_monitor_all(self, subreddits):
+        """Logs all new submissions for given subreddits.
+
+        Args:
+        subreddits (str): subreddits to monitor; multiple subreddits
+        can be included in string when separated by '+' sign, e.g.,
+        subreddit1+subreddit2+subreddit3.
+        """
+        reddit = self._reddit_access()
+        for submission in reddit.subreddit(subreddits).stream.submissions():
+            print("Logging submission.")
+            self._log_submissions(submission)
 
     def _reddit_access(self):
         """Returns reddit object for accessing subreddits."""
@@ -60,8 +73,9 @@ class SubredditMonitor(object):
         title = submission.title
         sub_id = submission.id
         url = submission.url
+        body = submission.selftext
         date_created = dt.datetime.fromtimestamp(submission.created)
-        log_string = f"{title},{sub_id},{url},{date_created}\n"
+        log_string = f"{title},{sub_id},{url},{date_created},{body}\n"
         with open(self.logfile, 'a') as f:
             f.write(log_string)
 
